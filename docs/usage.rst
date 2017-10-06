@@ -136,10 +136,12 @@ All optional attributes are passed as part of the options to ``captureException`
 
     If you're inside a context and your context data includes a ``user`` key, that data will be merged into this.
 
-.. describe:: req
+.. describe:: req/request
 
-    The ``req`` object associated with this event, from a Node http server, Express, Koa, or similar.
-    Will be parsed for request details and user context from ``req.user`` if present.
+    The ``req/request`` object associated with this event, from a Node http server, Express, Koa, or similar.
+    Will be parsed for request details and user context from ``req.user`` if present. It will only pull the data
+    that's handled by the server like method, headers, data, cookies, so you don't need to worry about passing
+    a bloated request object that might contain additional, yet unnecessary data.
 
     .. code-block:: javascript
 
@@ -299,7 +301,7 @@ It can do anything necessary, including asynchronous operations, to make a best 
 not throw, and it absolutely must not allow the process to keep running indefinitely. This means it should probably make an explicit ``process.exit()`` call.
 
 After catching a fatal exception, Raven will make a best-effort attempt to send it to Sentry before it calls the fatal exception handler.
-If sending fails, a ``sendErr`` error object will be passed, and otherwise the ``eventId`` will be provided. In either case, the error object 
+If sending fails, a ``sendErr`` error object will be passed, and otherwise the ``eventId`` will be provided. In either case, the error object
 resulting in the shutdown is passed as the first parameter.
 
 .. code-block:: javascript
